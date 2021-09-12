@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/12 12:08:58 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/12 12:39:51 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,22 @@ void	free_double_ptr(void **ptr)
 void	exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3)
 {
 	if (err_msg1 != NULL)
+	{
 		write(1, err_msg1, ft_strlen(err_msg1));
-	if (err_msg2 != NULL)
-	{
-		write(1, " ", 1);
-		write(1, err_msg2, ft_strlen(err_msg2));
+		if (err_msg2 != NULL)
+		{
+			write(1, " ", 1);
+			write(1, err_msg2, ft_strlen(err_msg2));
+		}
+		if (err_msg3 != NULL)
+		{
+			write(1, " ", 1);
+			write(1, err_msg3, ft_strlen(err_msg3));
+		}
+		write(1, "\n", 1);
 	}
-	if (err_msg3 != NULL)
-	{
-		write(1, " ", 1);
-		write(1, err_msg3, ft_strlen(err_msg3));
-	}
-	write(1, "\n", 1);
+	else
+		perror(NULL);
 	exit(1);
 }
 

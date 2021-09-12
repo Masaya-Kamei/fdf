@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/12 12:12:21 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/12 16:24:32 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <stdio.h>
 
 # define GNL_BUFFER_SIZE 100
+# define ESC_KEY 53
 
 typedef enum e_bool
 {
@@ -32,6 +33,8 @@ typedef struct s_data
 	int		**color_matrix;
 	int		width;
 	int		height;
+	void	*mlx;
+	void	*window;
 }			t_data;
 
 // main
