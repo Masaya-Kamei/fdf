@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/12 12:39:51 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:05:27 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3)
 	exit(1);
 }
 
-void	write_matrix(t_data *d)
+void	write_map(t_data *d)
 {
 	int		x;
 	int		y;
@@ -62,9 +62,9 @@ void	write_matrix(t_data *d)
 		{
 			if (x != 0)
 				write(1, "   ", 3);
-			ft_putnbr_fd(d->z_matrix[y][x], 1);
+			ft_putnbr_fd(d->map[y][x].z, 1);
 			write(1, ",", 2);
-			ft_putnbr_fd(d->color_matrix[y][x], 1);
+			ft_putnbr_fd(d->map[y][x].color, 1);
 			x++;
 		}
 		write(1, "\n", 1);

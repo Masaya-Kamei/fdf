@@ -6,119 +6,107 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:38:31 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/12 12:40:47 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:28:00 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	parse_str(char *str, int *z, int *color)
+static int	ato_nbr(char *str, int base)
 {
 	int		i;
-	char	*comma_ptr;
+	int		nbr;
 
 	i = 0;
+	nbr = 0;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
-	*z = 0;
-	while (str[i] >= '0' && str[i] <= '9')
-		*z = *z * 10 + str[i++] - '0';
-	if (str[0] == '-')
-		*z *= -1;
-	comma_ptr = ft_strchr(str, ',');
-	if (comma_ptr == NULL)
-		*color = 0x00ffff;
-	else
-		*color = 0x00ffff;
-}
-
-static int	**create_matrix(int width, int height)
-{
-	int		**matrix;
-	int		i;
-
-	matrix = (int **)malloc(sizeof(int *) * height);
-	if (matrix == NULL)
-		return (NULL);
-	i = 0;
-	while (i < height)
+	if (base == 16 && (str[i] == '0' && str[i + 1] == 'x'))
+		i += 2;
+	else if (base == 16)
+		return (nbr);
+	while (1)
 	{
-		matrix[i] = (int *)malloc(sizeof(int) * width);
-		if (matrix[i] == NULL)
-		{
-			free_double_ptr((void **)matrix);
-			return (NULL);
-		}
-		i++;
+		if (str[i] >= '0' && str[i] <= '9')
+			nbr = nbr * base + str[i++] - '0';
+		else if (base == 16 && str[i] >= 'a' && str[i] <= 'f')
+			nbr = nbr * base + str[i++] - 'a' + 10;
+		else if (base == 16 && str[i] >= 'A' && str[i] <= 'F')
+			nbr = nbr * base + str[i++] - 'A' + 10;
+		else
+			break ;
 	}
-	return (matrix);
+	if (str[0] == '-')
+		nbr *= -1;
+	return (nbr);
 }
 
-static void	init_fdf_data(t_data *d, t_list *lines_list)
+static void	parse_str(char *map_value_str, t_map_value *map_value)
 {
-	char	**strs;
+	char	*comma_ptr;
 
-	strs = ft_split(lines_list->content, ' ');
-	if (strs == NULL)
-		exit_with_errout(NULL, NULL, NULL);
+	(*map_value).z = ato_nbr(map_value_str, 10);
+	comma_ptr = ft_strchr(map_value_str, ',');
+	if (comma_ptr == NULL)
+		(*map_value).color = 0xffffff;
+	else
+		(*map_value).color = ato_nbr(comma_ptr + 1, 16);
+}
+
+static void	init_map_data(t_data *d, char **first_map_strs, t_list *lines_list)
+{
+	int		y;
+
 	d->width = 0;
-	while (strs[d->width] != NULL)
+	while (first_map_strs[d->width] != NULL)
 		d->width++;
-	free_double_ptr((void **)strs);
 	if (d->width == 0)
 		exit_with_errout("No data found.", NULL, NULL);
 	d->height = ft_lstsize(lines_list);
 	d->height -= ((char *)ft_lstlast(lines_list)->content)[0] == '\0';
-	d->z_matrix = create_matrix(d->width, d->height);
-	if (d->z_matrix == NULL)
+	d->map = (t_map_value **)malloc(sizeof(t_map_value *) * (d->height + 1));
+	if (d->map == NULL)
 		exit_with_errout(NULL, NULL, NULL);
-	d->color_matrix = create_matrix(d->width, d->height);
-	if (d->color_matrix == NULL)
-		exit_with_errout(NULL, NULL, NULL);
+	y = -1;
+	while (++y < d->height)
+	{
+		d->map[y] = (t_map_value *)malloc(sizeof(t_map_value) * d->width);
+		if (d->map[y] == NULL)
+			exit_with_errout(NULL, NULL, NULL);
+	}
+	d->map[y] = NULL;
 }
 
-	// int		i;
-
-	// matrix = (t_point **)malloc(sizeof(t_point *) * d->height);
-	// if (matrix == NULL)
-	// 	exit_with_errout(NULL, NULL, NULL);
-	// i = -1;
-	// while (++i < height)
-	// {
-	// 	matrix[i] = (int *)malloc(sizeof(int) * width);
-	// 	if (matrix[i] == NULL)
-	// 		exit_with_errout(NULL, NULL, NULL);
-	// }
-
-static void	save_fdf_data(t_data *d, t_list *lines_list)
+static void	save_map_data(t_data *d, t_list *lines_list)
 {
 	int		x;
 	int		y;
 	t_list	*list;
-	char	**strs;
+	char	**map_strs;
 
-	init_fdf_data(d, lines_list);
 	y = -1;
 	list = lines_list;
-	while (++y < d->height)
+	while (++y == 0 || y < d->height)
 	{
-		strs = ft_split(list->content, ' ');
-		if (strs == NULL)
+		map_strs = ft_split(list->content, ' ');
+		if (map_strs == NULL)
 			exit_with_errout(NULL, NULL, NULL);
+		if (y == 0)
+			init_map_data(d, map_strs, lines_list);
 		x = -1;
 		while (++x < d->width)
 		{
-			if (strs[x] == NULL)
+			if (map_strs[x] == NULL)
 				exit_with_errout("Found wrong line length. Exiting.", 0, 0);
-			parse_str(strs[x], &d->z_matrix[y][x], &d->color_matrix[y][x]);
+			parse_str(map_strs[x], &d->map[y][d->width - x - 1]);
 		}
-		free_double_ptr((void **)strs);
+		free_double_ptr((void **)map_strs);
 		list = list->next;
 	}
 	ft_lstclear(&lines_list, NULL);
 }
 
-void	read_file(t_data *d, char *fdf_file)
+void	read_fdf_file(t_data *d, char *fdf_file)
 {
 	int		fd;
 	char	*line;
@@ -143,5 +131,5 @@ void	read_file(t_data *d, char *fdf_file)
 	}
 	if (close(fd) == -1)
 		exit_with_errout(NULL, NULL, NULL);
-	return (save_fdf_data(d, lines_list));
+	return (save_map_data(d, lines_list));
 }

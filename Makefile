@@ -1,5 +1,5 @@
 SRC_DIR := ./srcs/
-SRCNAME	:=	fdf.c get_next_line.c read_file.c utils.c
+SRCNAME	:=	fdf.c get_next_line.c read_file.c utils.c draw_map.c
 SRCS	:= $(addprefix $(SRC_DIR), $(SRCNAME))
 OBJS	:= $(SRCS:.c=.o)
 INCLUDE := -I./includes/
@@ -30,13 +30,16 @@ LIBDIR		:= -L${LIBFTDIR} -L${LIBMLXDIR}
 LIBLINK		:= -l${LIBFTNAME} -l${LIBMLXNAME}
 LIBINCLUDE	:= -I${LIBFTINCLUDEDIR} -I${LIBMLXINCLUDEDIR}
 
+LIB			:= $(LIBINCLUDE) $(LIBDIR) $(LIBLINK)
+FRAMEWORK	:= -framework OpenGL -framework AppKit
+
 all		:	$(NAME)
 
 .c.o	:
 			$(CC) $(CFLAGS) $(INCLUDE) $(LIBINCLUDE) -c $< -o $(<:.c=.o)
 
 $(NAME)	:	$(LIBFT) $(LIBMLX) $(OBJS)
-			$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(LIBINCLUDE) $(LIBDIR) $(LIBLINK) -o $(NAME)
+			$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(LIB) $(FRAMEWORK) -o $(NAME)
 
 $(LIBFT):
 			make $(LIBFTTARGET) -C $(LIBFTDIR)
