@@ -1,5 +1,5 @@
 SRC_DIR := ./srcs/
-SRCNAME	:=	fdf.c get_next_line.c read_file.c utils.c draw_map.c
+SRCNAME	:=	fdf.c get_next_line.c read_map.c utils.c draw_map.c rotate.c
 SRCS	:= $(addprefix $(SRC_DIR), $(SRCNAME))
 OBJS	:= $(SRCS:.c=.o)
 INCLUDE := -I./includes/
