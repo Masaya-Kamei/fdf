@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/22 11:40:20 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/23 19:47:10 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ void	free_double_ptr(void **ptr)
 		i++;
 	}
 	free(ptr);
+}
+
+void	finish_fdf(t_data *d)
+{
+	free_double_ptr((void **)d->map.matrix);
+	mlx_destroy_image(d->mlx, d->img.img);
+	mlx_destroy_window(d->mlx, d->win.win);
+	free(d);
+	exit(0);
 }
 
 void	exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3)

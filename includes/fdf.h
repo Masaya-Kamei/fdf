@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/22 17:34:23 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/23 19:47:36 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@
 # define RIGHT_KEY 124
 # define DOWN_KEY 125
 # define UP_KEY 126
+# define MOUSE_DOWN 4
+# define MOUSE_UP 5
+
+// X11 events
+# define KEYPRESS 2
+# define BUTTONPRESS 4
 
 typedef enum e_bool
 {
@@ -44,16 +50,16 @@ typedef enum e_axis_name
 
 typedef struct s_point_2d
 {
-	float		x;
-	float		y;
+	double		x;
+	double		y;
 	int			color;
 }				t_point_2d;
 
 typedef struct s_point_3d
 {
-	float		x;
-	float		y;
-	float		z;
+	double		x;
+	double		y;
+	double		z;
 	int			color;
 }				t_point_3d;
 
@@ -66,14 +72,16 @@ typedef struct s_map
 
 typedef struct s_camera
 {
-	int			pixels_per_len;
-	float		z_rate;
+	double		pixel_per_len;
+	double		pixel_per_press;
+	double		angle_per_press;
+	double		z_per_xy;
 }				t_camera;
 
 typedef struct s_vector
 {
-	float		x;
-	float		y;
+	double		x;
+	double		y;
 }				t_vector;
 
 typedef struct s_basis
@@ -111,11 +119,16 @@ typedef struct s_data
 // main
 void	read_map_data(t_map *map, char *fdf_file);
 void	draw_map(t_data *d);
-void	rotate_map(t_map map, t_axis_name name, float angle);
+void	rotate_map(t_map map, t_axis_name name, double angle);
+
+// handler
+int		key_handler(int keycode, t_data *d);
+int		mouse_press_handler(int keycode, int x, int y, t_data *d);
 
 // utils
 int		get_next_line(int fd, char **line);
 void	free_double_ptr(void **ptr);
+void	finish_fdf(t_data *d);
 void	exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3);
 void	write_map(t_map map);
 

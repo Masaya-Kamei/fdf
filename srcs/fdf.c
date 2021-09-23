@@ -6,42 +6,11 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:27 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/22 17:56:52 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/23 19:48:07 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-static void	clear_fdf_data(t_data *d)
-{
-	free_double_ptr((void **)d->map.matrix);
-	mlx_destroy_image(d->mlx, d->img.img);
-	mlx_destroy_window(d->mlx, d->win.win);
-	free(d);
-}
-
-static int	key_hook(int keycode, t_data *d)
-{
-	if (keycode == ESC_KEY)
-	{
-		clear_fdf_data(d);
-		exit(0);
-	}
-	else if (keycode == LEFT_KEY || keycode == RIGHT_KEY
-		|| keycode == UP_KEY || keycode == DOWN_KEY)
-	{
-		if (keycode == LEFT_KEY)
-			rotate_map(d->map, Z, -PI / 24.0);
-		else if (keycode == RIGHT_KEY)
-			rotate_map(d->map, Z, PI / 24.0);
-		else if (keycode == DOWN_KEY)
-			rotate_map(d->map, X, -PI / 24.0);
-		else
-			rotate_map(d->map, X, PI / 24.0);
-		draw_map(d);
-	}
-	return (1);
-}
 
 static int	get_z_abs_max(t_map map)
 {
@@ -57,7 +26,7 @@ static int	get_z_abs_max(t_map map)
 		x = -1;
 		while (++x < map.width)
 		{
-			z = fabsf(map.matrix[y][x].z);
+			z = fabs(map.matrix[y][x].z);
 			if (max < z)
 				max = ceil(z);
 		}
@@ -67,7 +36,7 @@ static int	get_z_abs_max(t_map map)
 
 static void	init_fdf_data(t_data *d)
 {
-	float	max_height;
+	double	max_height;
 
 	d->basis.ex.x = 1;
 	d->basis.ex.y = 0;
@@ -77,11 +46,13 @@ static void	init_fdf_data(t_data *d)
 	d->basis.ez.y = -1;
 	d->win.width = 800;
 	d->win.height = 800;
-	d->camera.z_rate = 1.125;
+	d->camera.z_per_xy = 1.125;
 	max_height = hypot(d->map.width / 2, d->map.height / 2)
-		+ get_z_abs_max(d->map) * d->camera.z_rate;
-	d->camera.pixels_per_len
+		+ get_z_abs_max(d->map) * d->camera.z_per_xy;
+	d->camera.pixel_per_len
 		= (fmin(d->win.width, d->win.height) / 2) / (max_height + 2);
+	d->camera.pixel_per_press = d->camera.pixel_per_len / 10;
+	d->camera.angle_per_press = PI / 24.0;
 	d->mlx = mlx_init();
 	d->win.win = mlx_new_window(d->mlx, d->win.width, d->win.height, "FDF");
 	d->img.img = mlx_new_image(d->mlx, d->win.width, d->win.height);
@@ -103,7 +74,8 @@ int	main(int argc, char **argv)
 	read_map_data(&d->map, argv[1]);
 	init_fdf_data(d);
 	draw_map(d);
-	mlx_key_hook(d->win.win, key_hook, d);
+	mlx_hook(d->win.win, KEYPRESS, 1L << 0, key_handler, d);
+	mlx_hook(d->win.win, BUTTONPRESS, 1L << 2, mouse_press_handler, d);
 	mlx_loop(d->mlx);
 	return (0);
 }

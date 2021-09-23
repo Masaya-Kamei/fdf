@@ -6,14 +6,14 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:14:37 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/22 17:55:49 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/23 19:39:02 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 static t_point_2d	change_basis(
-	t_basis basis, float x_3d, float y_3d, float z_3d)
+	t_basis basis, double x_3d, double y_3d, double z_3d)
 {
 	t_point_2d	p_2d;
 
@@ -25,14 +25,14 @@ static t_point_2d	change_basis(
 static t_point_2d	get_2d_point(t_data *d, int x, int y)
 {
 	t_point_2d	p_2d;
-	float		x_3d;
-	float		y_3d;
-	float		z_3d;
+	double		x_3d;
+	double		y_3d;
+	double		z_3d;
 	const int	color = d->map.matrix[y][x].color;
 
-	x_3d = d->map.matrix[y][x].x * d->camera.pixels_per_len;
-	y_3d = d->map.matrix[y][x].y * d->camera.pixels_per_len;
-	z_3d = d->map.matrix[y][x].z * d->camera.pixels_per_len * d->camera.z_rate;
+	x_3d = d->map.matrix[y][x].x * d->camera.pixel_per_len;
+	y_3d = d->map.matrix[y][x].y * d->camera.pixel_per_len;
+	z_3d = d->map.matrix[y][x].z * d->camera.pixel_per_len * d->camera.z_per_xy;
 	p_2d = change_basis(d->basis, x_3d, y_3d, z_3d);
 	p_2d.x += d->win.width / 2;
 	p_2d.y += d->win.height / 2;
@@ -51,24 +51,24 @@ static void	my_mlx_pixel_put(t_img img, int x, int y, int color)
 static void	draw_line_segment(
 	t_img img, t_win win, t_point_2d p0, t_point_2d p1)
 {
-	float	x_step;
-	float	y_step;
+	double	x_step;
+	double	y_step;
 	int		color_step[3];
-	float	count;
+	int		count;
 
 	x_step = p1.x - p0.x;
 	y_step = p1.y - p0.y;
 	color_step[0] = (p1.color >> 16 & 0x0000ff ) - (p0.color >> 16 & 0x0000ff);
 	color_step[1] = (p1.color >> 8 & 0x0000ff) - (p0.color >> 8 & 0x0000ff);
 	color_step[2] = (p1.color & 0x0000ff) - (p0.color & 0x0000ff);
-	count = fmaxf(fabsf(x_step), fabsf(y_step));
-	if (count < 1)
-		count = 1;
+	count = ceil(fmax(fabs(x_step), fabs(y_step)));
+	if (count == 0)
+		return ;
 	x_step /= count;
 	y_step /= count;
 	color_step[0] = ((color_step[0] / (int)count) << 16)
 		+ ((color_step[1] / (int)count) << 8) + (color_step[2] / (int)count);
-	while ((int)(p0.x - p1.x) || (int)(p0.y - p1.y))
+	while (--count >= 0)
 	{
 		if (p0.x >= 0 && p0.x < win.width && p0.y >= 0 && p0.y < win.height)
 			my_mlx_pixel_put(img, p0.x, p0.y, p0.color);

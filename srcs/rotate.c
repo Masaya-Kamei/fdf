@@ -6,16 +6,16 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 12:44:03 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/22 17:41:04 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/23 11:58:51 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	rotate_x(float *y, float *z, float theta)
+static void	rotate_x(double *y, double *z, double theta)
 {
-	float	oldy;
-	float	oldz;
+	double	oldy;
+	double	oldz;
 
 	oldy = *y;
 	oldz = *z;
@@ -23,10 +23,10 @@ static void	rotate_x(float *y, float *z, float theta)
 	*z = oldy * sin(theta) + oldz * cos(theta);
 }
 
-static void	rotate_y(float *x, float *z, float phi)
+static void	rotate_y(double *x, double *z, double phi)
 {
-	float	oldx;
-	float	oldz;
+	double	oldx;
+	double	oldz;
 
 	oldx = *x;
 	oldz = *z;
@@ -34,10 +34,10 @@ static void	rotate_y(float *x, float *z, float phi)
 	*z = -oldx * sin(phi) + oldz * cos(phi);
 }
 
-static void	rotate_z(float *x, float *y, float psi)
+static void	rotate_z(double *x, double *y, double psi)
 {
-	float	oldx;
-	float	oldy;
+	double	oldx;
+	double	oldy;
 
 	oldx = *x;
 	oldy = *y;
@@ -45,7 +45,7 @@ static void	rotate_z(float *x, float *y, float psi)
 	*y = oldx * sin(psi) + oldy * cos(psi);
 }
 
-void	rotate_map(t_map map, t_axis_name name, float angle)
+void	rotate_map(t_map map, t_axis_name name, double angle)
 {
 	int		x;
 	int		y;
