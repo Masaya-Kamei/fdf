@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/23 19:47:36 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/26 13:08:40 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct s_point_3d
 	double		x;
 	double		y;
 	double		z;
+	int			map_x;
+	int			map_y;
 	int			color;
 }				t_point_3d;
 
@@ -117,19 +119,20 @@ typedef struct s_data
 }				t_data;
 
 // main
-void	read_map_data(t_map *map, char *fdf_file);
-void	draw_map(t_data *d);
-void	rotate_map(t_map map, t_axis_name name, double angle);
+void		read_map_data(t_map *map, char *fdf_file);
+void		draw_map(t_data *d);
+t_point_3d	*create_sorted_p_3ds(t_map map);
+void		rotate_map(t_map map, t_axis_name name, double angle);
 
 // handler
-int		key_handler(int keycode, t_data *d);
-int		mouse_press_handler(int keycode, int x, int y, t_data *d);
+int			key_handler(int keycode, t_data *d);
+int			mouse_press_handler(int keycode, int x, int y, t_data *d);
 
 // utils
-int		get_next_line(int fd, char **line);
-void	free_double_ptr(void **ptr);
-void	finish_fdf(t_data *d);
-void	exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3);
-void	write_map(t_map map);
+int			get_next_line(int fd, char **line);
+void		free_double_ptr(void **ptr);
+void		finish_fdf(t_data *d);
+void		exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3);
+void		write_map(t_map map);
 
 #endif

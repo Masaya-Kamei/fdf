@@ -6,37 +6,32 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:14:37 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/23 19:39:02 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/26 13:47:47 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_point_2d	change_basis(
-	t_basis basis, double x_3d, double y_3d, double z_3d)
+static t_point_2d	change_basis(t_basis basis, t_point_3d p_3d)
 {
 	t_point_2d	p_2d;
 
-	p_2d.x = (x_3d * basis.ex.x) + (y_3d * basis.ey.x) + (z_3d * basis.ez.x);
-	p_2d.y = (x_3d * basis.ex.y) + (y_3d * basis.ey.y) + (z_3d * basis.ez.y);
+	p_2d.x = p_3d.x * basis.ex.x + p_3d.y * basis.ey.x + p_3d.z * basis.ez.x;
+	p_2d.y = p_3d.x * basis.ex.y + p_3d.y * basis.ey.y + p_3d.z * basis.ez.y;
 	return (p_2d);
 }
 
-static t_point_2d	get_2d_point(t_data *d, int x, int y)
+static t_point_2d	get_2d_point(t_data *d, t_point_3d p_3d)
 {
 	t_point_2d	p_2d;
-	double		x_3d;
-	double		y_3d;
-	double		z_3d;
-	const int	color = d->map.matrix[y][x].color;
 
-	x_3d = d->map.matrix[y][x].x * d->camera.pixel_per_len;
-	y_3d = d->map.matrix[y][x].y * d->camera.pixel_per_len;
-	z_3d = d->map.matrix[y][x].z * d->camera.pixel_per_len * d->camera.z_per_xy;
-	p_2d = change_basis(d->basis, x_3d, y_3d, z_3d);
+	p_3d.x *= d->camera.pixel_per_len;
+	p_3d.y *= d->camera.pixel_per_len;
+	p_3d.z *= d->camera.pixel_per_len * d->camera.z_per_xy;
+	p_2d = change_basis(d->basis, p_3d);
 	p_2d.x += d->win.width / 2;
 	p_2d.y += d->win.height / 2;
-	p_2d.color = color;
+	p_2d.color = p_3d.color;
 	return (p_2d);
 }
 
@@ -48,61 +43,56 @@ static void	my_mlx_pixel_put(t_img img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-static void	draw_line_segment(
-	t_img img, t_win win, t_point_2d p0, t_point_2d p1)
+static void	draw_line(t_data *d, t_point_2d p, t_point_2d q)
 {
 	double	x_step;
 	double	y_step;
 	int		color_step[3];
 	int		count;
 
-	x_step = p1.x - p0.x;
-	y_step = p1.y - p0.y;
-	color_step[0] = (p1.color >> 16 & 0x0000ff ) - (p0.color >> 16 & 0x0000ff);
-	color_step[1] = (p1.color >> 8 & 0x0000ff) - (p0.color >> 8 & 0x0000ff);
-	color_step[2] = (p1.color & 0x0000ff) - (p0.color & 0x0000ff);
+	x_step = q.x - p.x;
+	y_step = q.y - p.y;
+	color_step[0] = (q.color >> 16 & 0x0000ff ) - (p.color >> 16 & 0x0000ff);
+	color_step[1] = (q.color >> 8 & 0x0000ff) - (p.color >> 8 & 0x0000ff);
+	color_step[2] = (q.color & 0x0000ff) - (p.color & 0x0000ff);
 	count = ceil(fmax(fabs(x_step), fabs(y_step)));
 	if (count == 0)
 		return ;
 	x_step /= count;
 	y_step /= count;
-	color_step[0] = ((color_step[0] / (int)count) << 16)
-		+ ((color_step[1] / (int)count) << 8) + (color_step[2] / (int)count);
+	color_step[0] = ((color_step[0] / count) << 16)
+		+ ((color_step[1] / count) << 8) + (color_step[2] / count);
 	while (--count >= 0)
 	{
-		if (p0.x >= 0 && p0.x < win.width && p0.y >= 0 && p0.y < win.height)
-			my_mlx_pixel_put(img, p0.x, p0.y, p0.color);
-		p0.x += x_step;
-		p0.y += y_step;
-		p0.color += color_step[0];
+		if (p.x >= 0 && p.x < d->win.width && p.y >= 0 && p.y < d->win.height)
+			my_mlx_pixel_put(d->img, p.x, p.y, p.color);
+		p.x += x_step;
+		p.y += y_step;
+		p.color += color_step[0];
 	}
 }
 
 void	draw_map(t_data *d)
 {
+	t_point_3d	*sorted_p_3ds;
+	t_point_2d	p_2d;
+	int			i;
 	int			x;
 	int			y;
-	t_point_2d	p0;
-	t_point_2d	p1;
-	int			i;
 
 	ft_memset(d->img.addr, 0x000000,
 		d->win.width * d->win.height * (d->img.bits_per_pixel / 8));
-	y = -1;
-	while (++y < d->map.height - 1)
+	sorted_p_3ds = create_sorted_p_3ds(d->map);
+	i = -1;
+	while (++i < (d->map.width - 1) * (d->map.height - 1))
 	{
-		x = -1;
-		while (++x < d->map.width - 1)
-		{
-			i = -1;
-			while (++i < 3)
-			{
-				p0 = get_2d_point(d, x, y);
-				p1 = get_2d_point(d,
-						x + (i == 0 || i == 2), y + (i == 1 || i == 2));
-				draw_line_segment(d->img, d->win, p0, p1);
-			}
-		}
+		x = sorted_p_3ds[i].map_x;
+		y = sorted_p_3ds[i].map_y;
+		p_2d = get_2d_point(d, d->map.matrix[y][x]);
+		draw_line(d, p_2d, get_2d_point(d, d->map.matrix[y + 1][x]));
+		draw_line(d, p_2d, get_2d_point(d, d->map.matrix[y][x + 1]));
+		draw_line(d, p_2d, get_2d_point(d, d->map.matrix[y + 1][x + 1]));
 	}
+	free(sorted_p_3ds);
 	mlx_put_image_to_window(d->mlx, d->win.win, d->img.img, 0, 0);
 }

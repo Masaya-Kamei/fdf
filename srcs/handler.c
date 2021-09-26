@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 19:43:10 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/23 19:45:04 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/24 21:06:50 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	key_handler(int keycode, t_data *d)
 		|| keycode == UP_KEY || keycode == DOWN_KEY)
 	{
 		if (keycode == LEFT_KEY)
-			rotate_map(d->map, Z, -d->camera.angle_per_press);
-		else if (keycode == RIGHT_KEY)
 			rotate_map(d->map, Z, d->camera.angle_per_press);
+		else if (keycode == RIGHT_KEY)
+			rotate_map(d->map, Z, -d->camera.angle_per_press);
 		else if (keycode == DOWN_KEY)
 			rotate_map(d->map, X, -d->camera.angle_per_press);
 		else

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:38:31 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/22 17:40:45 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/26 11:11:21 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static void	parse_str(char *map_value_str, t_map *map, int x, int y)
 {
 	char	*comma_ptr;
 
+	map->matrix[y][x].map_x = x;
+	map->matrix[y][x].map_y = y;
 	map->matrix[y][x].x = x - map->width / 2.0;
 	map->matrix[y][x].y = y - map->height / 2.0;
 	map->matrix[y][x].z = ato_nbr(map_value_str, 10);

@@ -1,5 +1,5 @@
 SRC_DIR := ./srcs/
-SRCNAME	:=	fdf.c read_map.c utils.c draw_map.c rotate.c handler.c \
+SRCNAME	:=	fdf.c read_map.c utils.c draw_map.c rotate.c handler.c sort.c \
 			get_next_line.c
 SRCS	:= $(addprefix $(SRC_DIR), $(SRCNAME))
 OBJS	:= $(SRCS:.c=.o)
