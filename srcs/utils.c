@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/23 19:47:10 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/26 20:35:51 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	free_double_ptr(void **ptr)
 
 void	finish_fdf(t_data *d)
 {
-	free_double_ptr((void **)d->map.matrix);
+	free_double_ptr((void **)d->map.matrix_3d);
+	free_double_ptr((void **)d->map.matrix_2d);
+	free(d->map.sorted_p_3d_ptrs);
+	free(d->map.msort_tmp);
 	mlx_destroy_image(d->mlx, d->img.img);
 	mlx_destroy_window(d->mlx, d->win.win);
 	free(d);
@@ -58,23 +61,21 @@ void	exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3)
 	exit(1);
 }
 
-void	write_map(t_map map)
+void	write_matrix_3d(t_map map)
 {
 	int		x;
 	int		y;
 
-	y = 0;
+	y = -1;
 	while (y < map.height)
 	{
-		x = 0;
+		x = -1;
 		while (x < map.width)
 		{
 			if (x != 0)
 				write(1, "   ", 3);
-			ft_putnbr_fd(map.matrix[y][x].z, 1);
-			x++;
+			ft_putnbr_fd(map.matrix_3d[y][x].z, 1);
 		}
 		write(1, "\n", 1);
-		y++;
 	}
 }

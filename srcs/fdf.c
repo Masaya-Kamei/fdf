@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:27 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/23 19:48:07 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/27 10:11:12 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	get_z_abs_max(t_map map)
 		x = -1;
 		while (++x < map.width)
 		{
-			z = fabs(map.matrix[y][x].z);
+			z = fabs(map.matrix_3d[y][x].z);
 			if (max < z)
 				max = ceil(z);
 		}
@@ -34,9 +34,49 @@ static int	get_z_abs_max(t_map map)
 	return (max);
 }
 
+static void	init_matrix_2d_data(t_map *map)
+{
+	int		y;
+
+	map->matrix_2d = malloc(sizeof(t_point_2d *) * (map->height + 1));
+	if (map->matrix_2d == NULL)
+		exit_with_errout(NULL, NULL, NULL);
+	y = -1;
+	while (++y < map->height)
+	{
+		map->matrix_2d[y] = malloc(sizeof(t_point_2d) * map->width);
+		if (map->matrix_2d[y] == NULL)
+			exit_with_errout(NULL, NULL, NULL);
+	}
+	map->matrix_2d[y] = NULL;
+}
+
+static void	init_sort_data(t_map *map)
+{
+	const int	size = (map->height - 1) * (map->width - 1);
+	int			x;
+	int			y;
+	int			i;
+
+	map->sorted_p_3d_ptrs = (t_point_3d **)malloc(sizeof(t_point_3d *) * size);
+	if (map->sorted_p_3d_ptrs == NULL)
+		exit_with_errout(NULL, NULL, NULL);
+	i = 0;
+	y = -1;
+	while (++y < map->height - 1)
+	{
+		x = -1;
+		while (++x < map->width - 1)
+			map->sorted_p_3d_ptrs[i++] = &map->matrix_3d[y][x];
+	}
+	map->msort_tmp = (t_point_3d **)malloc(sizeof(t_point_3d *) * size);
+	if (map->msort_tmp == NULL)
+		exit_with_errout(NULL, NULL, NULL);
+}
+
 static void	init_fdf_data(t_data *d)
 {
-	double	max_height;
+	double	h;
 
 	d->basis.ex.x = 1;
 	d->basis.ex.y = 0;
@@ -47,10 +87,9 @@ static void	init_fdf_data(t_data *d)
 	d->win.width = 800;
 	d->win.height = 800;
 	d->camera.z_per_xy = 1.125;
-	max_height = hypot(d->map.width / 2, d->map.height / 2)
+	h = hypot(d->map.width / 2, d->map.height / 2)
 		+ get_z_abs_max(d->map) * d->camera.z_per_xy;
-	d->camera.pixel_per_len
-		= (fmin(d->win.width, d->win.height) / 2) / (max_height + 2);
+	d->camera.pixel_per_len = (fmin(d->win.width, d->win.height) / 2) / (h + 2);
 	d->camera.pixel_per_press = d->camera.pixel_per_len / 10;
 	d->camera.angle_per_press = PI / 24.0;
 	d->mlx = mlx_init();
@@ -58,8 +97,10 @@ static void	init_fdf_data(t_data *d)
 	d->img.img = mlx_new_image(d->mlx, d->win.width, d->win.height);
 	d->img.addr = mlx_get_data_addr(d->img.img,
 			&d->img.bits_per_pixel, &d->img.line_length, &d->img.endian);
-	rotate_map(d->map, Z, PI / 6);
-	rotate_map(d->map, X, -PI / 6);
+	init_matrix_2d_data(&d->map);
+	init_sort_data(&d->map);
+	rotate_3d_map(d->map, Z, PI / 6);
+	rotate_3d_map(d->map, X, -PI / 6);
 }
 
 int	main(int argc, char **argv)
@@ -71,7 +112,7 @@ int	main(int argc, char **argv)
 	d = (t_data *)malloc(sizeof(t_data));
 	if (d == NULL)
 		exit_with_errout(NULL, NULL, NULL);
-	read_map_data(&d->map, argv[1]);
+	read_3d_map_data(&d->map, argv[1]);
 	init_fdf_data(d);
 	draw_map(d);
 	mlx_hook(d->win.win, KEYPRESS, 1L << 0, key_handler, d);

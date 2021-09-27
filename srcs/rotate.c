@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 12:44:03 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/23 11:58:51 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/26 20:00:40 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	rotate_z(double *x, double *y, double psi)
 	*y = oldx * sin(psi) + oldy * cos(psi);
 }
 
-void	rotate_map(t_map map, t_axis_name name, double angle)
+void	rotate_3d_map(t_map map, t_axis_name name, double angle)
 {
 	int		x;
 	int		y;
@@ -57,11 +57,11 @@ void	rotate_map(t_map map, t_axis_name name, double angle)
 		while (++x < map.width)
 		{
 			if (name == X)
-				rotate_x(&map.matrix[y][x].y, &map.matrix[y][x].z, angle);
+				rotate_x(&map.matrix_3d[y][x].y, &map.matrix_3d[y][x].z, angle);
 			else if (name == Y)
-				rotate_y(&map.matrix[y][x].x, &map.matrix[y][x].z, angle);
+				rotate_y(&map.matrix_3d[y][x].x, &map.matrix_3d[y][x].z, angle);
 			else if (name == Z)
-				rotate_z(&map.matrix[y][x].x, &map.matrix[y][x].y, angle);
+				rotate_z(&map.matrix_3d[y][x].x, &map.matrix_3d[y][x].y, angle);
 		}
 	}
 }

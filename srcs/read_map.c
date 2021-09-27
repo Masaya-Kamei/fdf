@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:38:31 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/26 11:11:21 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/26 20:07:02 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,76 +41,77 @@ static int	ato_nbr(char *str, int base)
 	return (nbr);
 }
 
-static void	parse_str(char *map_value_str, t_map *map, int x, int y)
+static void	parse_str(char *p_3d_str, t_map *map, int x, int y)
 {
 	char	*comma_ptr;
 
-	map->matrix[y][x].map_x = x;
-	map->matrix[y][x].map_y = y;
-	map->matrix[y][x].x = x - map->width / 2.0;
-	map->matrix[y][x].y = y - map->height / 2.0;
-	map->matrix[y][x].z = ato_nbr(map_value_str, 10);
-	comma_ptr = ft_strchr(map_value_str, ',');
+	map->matrix_3d[y][x].matrix_x = x;
+	map->matrix_3d[y][x].matrix_y = y;
+	map->matrix_3d[y][x].x = x - map->width / 2.0;
+	map->matrix_3d[y][x].y = y - map->height / 2.0;
+	map->matrix_3d[y][x].z = ato_nbr(p_3d_str, 10);
+	comma_ptr = ft_strchr(p_3d_str, ',');
 	if (comma_ptr == NULL)
-		map->matrix[y][x].color = 0xffffff;
+		map->matrix_3d[y][x].color = 0xffffff;
 	else
-		map->matrix[y][x].color = ato_nbr(comma_ptr + 1, 16);
+		map->matrix_3d[y][x].color = ato_nbr(comma_ptr + 1, 16);
 }
 
-static void	init_map_data(t_map *map, char **first_map_strs, t_list *lines_list)
+static void	init_3d_map_data(
+	t_map *map, char **first_p_3d_strs, t_list *lines_list)
 {
 	int		y;
 
 	map->width = 0;
-	while (first_map_strs[map->width] != NULL)
+	while (first_p_3d_strs[map->width] != NULL)
 		map->width++;
 	if (map->width == 0)
 		exit_with_errout("No data found.", NULL, NULL);
 	map->height = ft_lstsize(lines_list);
 	map->height -= ((char *)(ft_lstlast(lines_list)->content))[0] == '\0';
-	map->matrix = malloc(sizeof(t_point_3d *) * (map->height + 1));
-	if (map->matrix == NULL)
+	map->matrix_3d = malloc(sizeof(t_point_3d *) * (map->height + 1));
+	if (map->matrix_3d == NULL)
 		exit_with_errout(NULL, NULL, NULL);
 	y = -1;
 	while (++y < map->height)
 	{
-		map->matrix[y] = malloc(sizeof(t_point_3d) * map->width);
-		if (map->matrix[y] == NULL)
+		map->matrix_3d[y] = malloc(sizeof(t_point_3d) * map->width);
+		if (map->matrix_3d[y] == NULL)
 			exit_with_errout(NULL, NULL, NULL);
 	}
-	map->matrix[y] = NULL;
+	map->matrix_3d[y] = NULL;
 }
 
-static void	save_map_data(t_map *map, t_list *lines_list)
+static void	save_3d_map_data(t_map *map, t_list *lines_list)
 {
 	int		x;
 	int		y;
 	t_list	*list;
-	char	**map_strs;
+	char	**p_3d_strs;
 
 	y = -1;
 	list = lines_list;
 	while (++y == 0 || y < map->height)
 	{
-		map_strs = ft_split(list->content, ' ');
-		if (map_strs == NULL)
+		p_3d_strs = ft_split(list->content, ' ');
+		if (p_3d_strs == NULL)
 			exit_with_errout(NULL, NULL, NULL);
 		if (y == 0)
-			init_map_data(map, map_strs, lines_list);
+			init_3d_map_data(map, p_3d_strs, lines_list);
 		x = -1;
 		while (++x < map->width)
 		{
-			if (map_strs[x] == NULL)
+			if (p_3d_strs[x] == NULL)
 				exit_with_errout("Found wrong line length. Exiting.", 0, 0);
-			parse_str(map_strs[x], map, x, y);
+			parse_str(p_3d_strs[x], map, x, y);
 		}
-		free_double_ptr((void **)map_strs);
+		free_double_ptr((void **)p_3d_strs);
 		list = list->next;
 	}
 	ft_lstclear(&lines_list, NULL);
 }
 
-void	read_map_data(t_map *map, char *fdf_file)
+void	read_3d_map_data(t_map *map, char *fdf_file)
 {
 	int		fd;
 	char	*line;
@@ -135,5 +136,5 @@ void	read_map_data(t_map *map, char *fdf_file)
 	}
 	if (close(fd) == -1)
 		exit_with_errout(NULL, NULL, NULL);
-	return (save_map_data(map, lines_list));
+	return (save_3d_map_data(map, lines_list));
 }
