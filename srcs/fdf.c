@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:27 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/27 10:11:12 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/27 10:49:08 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	init_matrix_2d_data(t_map *map)
 
 static void	init_sort_data(t_map *map)
 {
-	const int	size = (map->height - 1) * (map->width - 1);
+	const int	size = map->width * map->height;
 	int			x;
 	int			y;
 	int			i;
@@ -63,10 +63,10 @@ static void	init_sort_data(t_map *map)
 		exit_with_errout(NULL, NULL, NULL);
 	i = 0;
 	y = -1;
-	while (++y < map->height - 1)
+	while (++y < map->height)
 	{
 		x = -1;
-		while (++x < map->width - 1)
+		while (++x < map->width)
 			map->sorted_p_3d_ptrs[i++] = &map->matrix_3d[y][x];
 	}
 	map->msort_tmp = (t_point_3d **)malloc(sizeof(t_point_3d *) * size);

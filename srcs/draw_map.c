@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:14:37 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/26 20:32:51 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/27 11:37:16 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	draw_line(t_data *d, t_point_2d p, t_point_2d q)
 
 void	draw_map(t_data *d)
 {
-	const int	size = (d->map.height - 1) * (d->map.width - 1);
+	const int	size = d->map.width * d->map.height;
 	int			i;
 	int			x;
 	int			y;
@@ -100,9 +100,13 @@ void	draw_map(t_data *d)
 	{
 		x = d->map.sorted_p_3d_ptrs[i]->matrix_x;
 		y = d->map.sorted_p_3d_ptrs[i]->matrix_y;
-		draw_line(d, d->map.matrix_2d[y][x], d->map.matrix_2d[y + 1][x]);
-		draw_line(d, d->map.matrix_2d[y][x], d->map.matrix_2d[y][x + 1]);
-		draw_line(d, d->map.matrix_2d[y][x], d->map.matrix_2d[y + 1][x + 1]);
+		if (x != d->map.width - 1)
+			draw_line(d, d->map.matrix_2d[y][x], d->map.matrix_2d[y][x + 1]);
+		if (y != d->map.height - 1)
+			draw_line(d, d->map.matrix_2d[y][x], d->map.matrix_2d[y + 1][x]);
+		if (x != d->map.width - 1 && y != d->map.height - 1)
+			draw_line(d,
+				d->map.matrix_2d[y][x], d->map.matrix_2d[y + 1][x + 1]);
 	}
 	mlx_put_image_to_window(d->mlx, d->win.win, d->img.img, 0, 0);
 }
