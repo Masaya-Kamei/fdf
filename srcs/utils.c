@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/26 20:35:51 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/29 16:32:34 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	free_double_ptr(void **ptr)
 	free(ptr);
 }
 
-void	finish_fdf(t_data *d)
+int	finish_fdf(t_data *d)
 {
 	free_double_ptr((void **)d->map.matrix_3d);
 	free_double_ptr((void **)d->map.matrix_2d);

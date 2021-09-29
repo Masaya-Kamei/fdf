@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/27 10:06:26 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/29 16:28:36 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 // X11 events
 # define KEYPRESS 2
 # define BUTTONPRESS 4
+# define DESTROYNOTIFY 17
 
 typedef enum e_bool
 {
@@ -135,7 +136,7 @@ int			mouse_press_handler(int keycode, int x, int y, t_data *d);
 // utils
 int			get_next_line(int fd, char **line);
 void		free_double_ptr(void **ptr);
-void		finish_fdf(t_data *d);
+int			finish_fdf(t_data *d);
 void		exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3);
 void		write_matrix_3d(t_map map);
 

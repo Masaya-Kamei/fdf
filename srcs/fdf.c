@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:27 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/29 16:00:56 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/29 16:25:30 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int	main(int argc, char **argv)
 	draw_map(d);
 	mlx_hook(d->win.win, KEYPRESS, 1L << 0, key_handler, d);
 	mlx_hook(d->win.win, BUTTONPRESS, 1L << 2, mouse_press_handler, d);
+	mlx_hook(d->win.win, DESTROYNOTIFY, 1L << 17, finish_fdf, d);
 	mlx_loop(d->mlx);
 	return (0);
 }
