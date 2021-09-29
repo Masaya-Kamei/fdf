@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:27 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/27 10:49:08 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/29 16:00:56 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ static void	init_fdf_data(t_data *d)
 			&d->img.bits_per_pixel, &d->img.line_length, &d->img.endian);
 	init_matrix_2d_data(&d->map);
 	init_sort_data(&d->map);
-	rotate_3d_map(d->map, Z, PI / 6);
-	rotate_3d_map(d->map, X, -PI / 6);
+	rotate_3d_map(d->map, Z, -PI / 4);
+	rotate_3d_map(d->map, X, asin(tan(-PI / 6)));
 }
 
 int	main(int argc, char **argv)

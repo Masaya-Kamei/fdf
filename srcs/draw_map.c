@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:14:37 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/27 11:37:16 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/09/28 12:15:59 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,6 @@ void	draw_map(t_data *d)
 			draw_line(d, d->map.matrix_2d[y][x], d->map.matrix_2d[y][x + 1]);
 		if (y != d->map.height - 1)
 			draw_line(d, d->map.matrix_2d[y][x], d->map.matrix_2d[y + 1][x]);
-		if (x != d->map.width - 1 && y != d->map.height - 1)
-			draw_line(d,
-				d->map.matrix_2d[y][x], d->map.matrix_2d[y + 1][x + 1]);
 	}
 	mlx_put_image_to_window(d->mlx, d->win.win, d->img.img, 0, 0);
 }
