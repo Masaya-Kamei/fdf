@@ -1,8 +1,24 @@
-SRC_DIR := ./srcs/
-SRCNAME	:=	fdf.c read_map.c utils.c draw_map.c rotate.c handler.c \
-			merge_sort.c get_next_line.c
-SRCS	:= $(addprefix $(SRC_DIR), $(SRCNAME))
-OBJS	:= $(SRCS:.c=.o)
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/10/21 11:11:02 by mkamei            #+#    #+#              #
+#    Updated: 2021/10/21 11:29:07 by mkamei           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+SRCSDIR	:= ./srcs
+SRCSNAME:=	main.c read_map.c draw_map.c rotate.c handler.c merge_sort.c \
+			utils/get_next_line.c utils/utils.c
+SRCS	:= $(addprefix $(SRCSDIR)/, $(SRCSNAME))
+
+OBJSDIR :=	./objs
+OBJSNAME:=	$(SRCSNAME:.c=.o)
+OBJS    :=	$(addprefix $(OBJSDIR)/, $(OBJSNAME))
+
 INCLUDE := -I./includes/
 NAME	:= fdf
 
@@ -10,37 +26,32 @@ CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror
 RM		:= rm -rf
 
-LIBFTDIR		:= ./libft
-LIBFTNAME 		:= ft
-LIBFTINCLUDEDIR := $(LIBFTDIR)
-LIBFT			:= $(LIBFTDIR)/libft.a
-LIBFTTARGET		:= all
+LIBFTDIR	:= ./libft
+LIBFT		:= $(LIBFTDIR)/libft.a
+LIBFTTARGET	:= all
 
-UNAME 	:= $(shell uname)
-ifeq ($(UNAME),Linux)
-	LIBMLXDIR		:= ./minilibx_linux
-	LIBMLX			:= $(LIBMLXDIR)/libmlx.dylib
+ifeq ($(shell uname),Linux)
+	LIBMLXDIR	:= ./minilibx_linux
+	LIBMLX		:= $(LIBMLXDIR)/libmlx.dylib
 else
-	LIBMLXDIR		:= ./minilibx_macos
-	LIBMLX			:= $(LIBMLXDIR)/libmlx.a
+	LIBMLXDIR	:= ./minilibx_macos
+	LIBMLX		:= $(LIBMLXDIR)/libmlx.a
 endif
-LIBMLXNAME			:= mlx
-LIBMLXINCLUDEDIR	:= $(LIBMLXDIR)
 
 LIBDIR		:= -L${LIBFTDIR} -L${LIBMLXDIR}
-LIBLINK		:= -l${LIBFTNAME} -l${LIBMLXNAME}
-LIBINCLUDE	:= -I${LIBFTINCLUDEDIR} -I${LIBMLXINCLUDEDIR}
-
+LIBLINK		:= -lft -lmlx
+LIBINCLUDE	:= -I./libft -I${LIBMLXDIR}
 LIB			:= $(LIBINCLUDE) $(LIBDIR) $(LIBLINK)
 FRAMEWORK	:= -framework OpenGL -framework AppKit
 
 all		:	$(NAME)
 
-.c.o	:
-			$(CC) $(CFLAGS) $(INCLUDE) $(LIBINCLUDE) -c $< -o $(<:.c=.o)
-
 $(NAME)	:	$(LIBFT) $(LIBMLX) $(OBJS)
 			$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(LIB) $(FRAMEWORK) -o $(NAME)
+
+$(OBJSDIR)/%.o	:	$(SRCSDIR)/%.c
+			@mkdir -p $(dir $@)
+			$(CC) $(CFLAGS) $(INCLUDE) $(LIBINCLUDE) -o $@ -c $<
 
 $(LIBFT):
 			make $(LIBFTTARGET) -C $(LIBFTDIR)
@@ -59,12 +70,14 @@ fclean	: 	clean
 
 re		:	fclean all
 
-debug	: CFLAGS += -g
-debug	: LIBFTTARGET := debug
-debug	: re
+address	:	CC			=	clang
+address	:	CFLAGS		+=	-g -fsanitize=address
+address	:	LIBFTTARGET	=	address
+address	:	re
 
-address	: CFLAGS += -g -fsanitize=address
-address	: LIBFTTARGET := address
-address	: re
+leak	:	CC			=	clang
+leak	:	CFLAGS		+=	-g -fsanitize=leak
+leak	:	LIBFTTARGET	=	leak
+leak	:	re
 
-.PHONY:	all clean fclean re debug address
+.PHONY:	all clean fclean re address leak

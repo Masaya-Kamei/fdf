@@ -6,13 +6,13 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 12:44:03 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/26 20:00:40 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/21 11:56:35 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	rotate_x(double *y, double *z, double theta)
+static void	rotate_x(double *y, double *z, const double theta)
 {
 	double	oldy;
 	double	oldz;
@@ -23,7 +23,7 @@ static void	rotate_x(double *y, double *z, double theta)
 	*z = oldy * sin(theta) + oldz * cos(theta);
 }
 
-static void	rotate_y(double *x, double *z, double phi)
+static void	rotate_y(double *x, double *z, const double phi)
 {
 	double	oldx;
 	double	oldz;
@@ -34,7 +34,7 @@ static void	rotate_y(double *x, double *z, double phi)
 	*z = -oldx * sin(phi) + oldz * cos(phi);
 }
 
-static void	rotate_z(double *x, double *y, double psi)
+static void	rotate_z(double *x, double *y, const double psi)
 {
 	double	oldx;
 	double	oldy;
@@ -45,7 +45,7 @@ static void	rotate_z(double *x, double *y, double psi)
 	*y = oldx * sin(psi) + oldy * cos(psi);
 }
 
-void	rotate_3d_map(t_map map, t_axis_name name, double angle)
+void	rotate_3d_map(t_map map, const t_axis_name name, const double angle)
 {
 	int		x;
 	int		y;

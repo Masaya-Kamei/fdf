@@ -6,13 +6,13 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 19:43:10 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/26 20:08:22 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/21 11:54:07 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	key_handler(int keycode, t_data *d)
+int	key_handler(const int keycode, t_data *d)
 {
 	if (keycode == ESC_KEY)
 		finish_fdf(d);
@@ -32,7 +32,7 @@ int	key_handler(int keycode, t_data *d)
 	return (1);
 }
 
-int	mouse_press_handler(int keycode, int x, int y, t_data *d)
+int	mouse_press_handler(const int keycode, const int x, const int y, t_data *d)
 {
 	(void)x;
 	(void)y;

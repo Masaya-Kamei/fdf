@@ -6,13 +6,13 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 16:48:13 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/01 13:08:36 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/21 11:52:20 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	create_line(char **line, char **save)
+static int	split_into_line_and_save(char **line, char **save)
 {
 	char	*new_line_ptr;
 	char	*tmp;
@@ -88,5 +88,5 @@ int	get_next_line(int fd, char **line)
 		free(*line);
 		return (-1);
 	}
-	return (create_line(line, &save));
+	return (split_into_line_and_save(line, &save));
 }

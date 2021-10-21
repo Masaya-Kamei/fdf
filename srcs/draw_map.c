@@ -6,13 +6,13 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:14:37 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/28 12:15:59 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/21 11:10:14 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_point_2d	change_basis(t_basis basis, t_point_3d p_3d)
+static t_point_2d	change_basis(const t_basis basis, const t_point_3d p_3d)
 {
 	t_point_2d	p_2d;
 
@@ -21,7 +21,7 @@ static t_point_2d	change_basis(t_basis basis, t_point_3d p_3d)
 	return (p_2d);
 }
 
-void	update_matrix_2d(t_data *d)
+static void	update_matrix_2d(t_data *d)
 {
 	int			x;
 	int			y;
@@ -47,7 +47,8 @@ void	update_matrix_2d(t_data *d)
 	}
 }
 
-static void	my_mlx_pixel_put(t_img img, int x, int y, int color)
+static void	my_mlx_pixel_put(
+	const t_img img, const int x, const int y, const int color)
 {
 	char	*dst;
 
@@ -55,7 +56,7 @@ static void	my_mlx_pixel_put(t_img img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-static void	draw_line(t_data *d, t_point_2d p, t_point_2d q)
+static void	draw_line(t_data *d, t_point_2d p, const t_point_2d q)
 {
 	double	x_step;
 	double	y_step;

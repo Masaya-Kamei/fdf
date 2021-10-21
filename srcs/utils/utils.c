@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/29 16:32:34 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/21 11:53:11 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	finish_fdf(t_data *d)
 	exit(0);
 }
 
-void	exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3)
+void	exit_with_errout(
+	const char *err_msg1, const char *err_msg2, const char *err_msg3)
 {
 	if (err_msg1 != NULL)
 	{
@@ -61,7 +62,7 @@ void	exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3)
 	exit(1);
 }
 
-void	write_matrix_3d(t_map map)
+void	write_matrix_3d(const t_map map)
 {
 	int		x;
 	int		y;

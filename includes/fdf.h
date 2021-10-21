@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/29 16:28:36 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/21 12:02:52 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
+# include <stdbool.h>
 
 # define GNL_BUFFER_SIZE 100
 # define PI 3.14159
@@ -35,12 +36,6 @@
 # define KEYPRESS 2
 # define BUTTONPRESS 4
 # define DESTROYNOTIFY 17
-
-typedef enum e_bool
-{
-	FALSE	= 0,
-	TRUE	= 1
-}			t_bool;
 
 typedef enum e_axis_name
 {
@@ -123,21 +118,23 @@ typedef struct s_data
 }				t_data;
 
 // main
-void		read_3d_map_data(t_map *map, char *fdf_file);
-void		draw_map(t_data *d);
-void		merge_sort_by_3d_y(
-				t_point_3d **p_3d_ptrs, t_point_3d **tmp, int start, int end);
-void		rotate_3d_map(t_map map, t_axis_name name, double angle);
+void	read_3d_map_data(t_map *map, const char *fdf_file);
+void	draw_map(t_data *d);
+void	merge_sort_by_3d_y(t_point_3d **p_3d_ptrs,
+			t_point_3d **tmp, const int start, const int end);
+void	rotate_3d_map(t_map map, const t_axis_name name, const double angle);
 
 // handler
-int			key_handler(int keycode, t_data *d);
-int			mouse_press_handler(int keycode, int x, int y, t_data *d);
+int		key_handler(const int keycode, t_data *d);
+int		mouse_press_handler(
+			const int keycode, const int x, const int y, t_data *d);
 
 // utils
-int			get_next_line(int fd, char **line);
-void		free_double_ptr(void **ptr);
-int			finish_fdf(t_data *d);
-void		exit_with_errout(char *err_msg1, char *err_msg2, char *err_msg3);
-void		write_matrix_3d(t_map map);
+int		get_next_line(int fd, char **line);
+void	free_double_ptr(void **ptr);
+int		finish_fdf(t_data *d);
+void	exit_with_errout(
+			const char *err_msg1, const char *err_msg2, const char *err_msg3);
+void	write_matrix_3d(const t_map map);
 
 #endif

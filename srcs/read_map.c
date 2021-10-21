@@ -6,13 +6,13 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:38:31 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/26 20:07:02 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/21 13:22:25 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	ato_nbr(char *str, int base)
+static int	atoi_in_base(const char *str, const int base)
 {
 	int		i;
 	int		nbr;
@@ -41,7 +41,7 @@ static int	ato_nbr(char *str, int base)
 	return (nbr);
 }
 
-static void	parse_str(char *p_3d_str, t_map *map, int x, int y)
+static void	parse_str(char *p_3d_str, t_map *map, const int x, const int y)
 {
 	char	*comma_ptr;
 
@@ -49,12 +49,12 @@ static void	parse_str(char *p_3d_str, t_map *map, int x, int y)
 	map->matrix_3d[y][x].matrix_y = y;
 	map->matrix_3d[y][x].x = x - map->width / 2.0;
 	map->matrix_3d[y][x].y = y - map->height / 2.0;
-	map->matrix_3d[y][x].z = ato_nbr(p_3d_str, 10);
+	map->matrix_3d[y][x].z = atoi_in_base(p_3d_str, 10);
 	comma_ptr = ft_strchr(p_3d_str, ',');
 	if (comma_ptr == NULL)
 		map->matrix_3d[y][x].color = 0xffffff;
 	else
-		map->matrix_3d[y][x].color = ato_nbr(comma_ptr + 1, 16);
+		map->matrix_3d[y][x].color = atoi_in_base(comma_ptr + 1, 16);
 }
 
 static void	init_3d_map_data(
@@ -111,7 +111,7 @@ static void	save_3d_map_data(t_map *map, t_list *lines_list)
 	ft_lstclear(&lines_list, NULL);
 }
 
-void	read_3d_map_data(t_map *map, char *fdf_file)
+void	read_3d_map_data(t_map *map, const char *fdf_file)
 {
 	int		fd;
 	char	*line;
