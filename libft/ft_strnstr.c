@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 14:57:54 by mkamei            #+#    #+#             */
-/*   Updated: 2021/05/27 18:37:56 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/04 18:24:45 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strnstr(const char *s1, const char *s2, size_t len)
 	size_t	j;
 
 	if (s2[0] == '\0')
-		return ((char *)(s1));
+		return ((char *)s1);
 	i = 0;
 	while (s1[i] != '\0' && i < len)
 	{
@@ -26,7 +26,7 @@ char	*ft_strnstr(const char *s1, const char *s2, size_t len)
 		while (s1[i + j] == s2[j] && s1[i + j] != '\0' && (i + j) < len)
 		{
 			if (s2[j + 1] == '\0')
-				return ((char *)(s1 + i));
+				return ((char *)&s1[i]);
 			j++;
 		}
 		i++;

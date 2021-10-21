@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 17:38:26 by mkamei            #+#    #+#             */
-/*   Updated: 2021/05/27 18:20:22 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/04 18:27:32 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_atoi(const char *str)
 		nbr = (nbr * 10) + str[i++] - '0';
 	if (sign == 1 && nbr > LONG_MAX)
 		return (-1);
-	if (sign == -1 && (nbr - 1) > LONG_MAX)
+	else if (sign == -1 && (nbr - 1) > LONG_MAX)
 		return (0);
 	return (sign * nbr);
 }

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 13:18:32 by mkamei            #+#    #+#             */
-/*   Updated: 2021/05/27 18:36:59 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/04 18:24:16 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ char	*ft_strrchr(const char *s, int c)
 	while (s[i] != '\0')
 	{
 		if (s[i] == c)
-			p = (char *)(s + i);
+			p = (char *)&s[i];
 		i++;
 	}
 	if (s[i] == '\0' && c == '\0')
-		return ((char *)(s + i));
+		return ((char *)&s[i]);
 	return (p);
 }

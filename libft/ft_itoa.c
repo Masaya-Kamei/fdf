@@ -6,67 +6,43 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/09 15:30:11 by mkamei            #+#    #+#             */
-/*   Updated: 2021/05/27 18:28:01 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/04 12:41:15 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	get_int_len(int n)
+static int	get_digit_num(int n)
 {
-	unsigned int	un;
-	int				n_len;
+	int		digit_num;
 
-	n_len = 0;
-	if (n < 0)
-	{
-		un = -1 * n;
-		n_len++;
-	}
-	else
-		un = n;
-	while (un > 0)
-	{
-		n_len++;
-		un = un / 10;
-	}
-	return (n_len);
-}
-
-static void	nbr_to_str(char *str, int i, unsigned int nbr)
-{
-	if (nbr < 10)
-		str[i] = nbr + '0';
-	else
-	{
-		str[i] = nbr % 10 + '0';
-		nbr_to_str(str, i - 1, nbr / 10);
-	}
+	digit_num = 0;
+	while (n != 0 && ++digit_num)
+		n /= 10;
+	return (digit_num);
 }
 
 char	*ft_itoa(int n)
 {
-	int				n_len;
-	unsigned int	un;
-	char			*str;
+	const int	digit_num = get_digit_num(n);
+	const int	minus_flag = (n < 0);
+	const int	sign = 1 - (minus_flag * 2);
+	char		*str;
+	int			i;
 
 	if (n == 0)
 		return (ft_strdup("0"));
-	n_len = get_int_len(n);
-	str = (char *)malloc((n_len + 1) * sizeof(char));
+	str = (char *)malloc((digit_num + minus_flag + 1) * sizeof(char));
 	if (str == NULL)
 		return (NULL);
-	if (n < 0)
+	i = digit_num + minus_flag;
+	while (n != 0)
 	{
+		str[--i] = (n % 10) * sign + '0';
+		n /= 10;
+	}
+	if (minus_flag)
 		str[0] = '-';
-		un = -1 * n;
-		nbr_to_str(str, n_len - 1, un);
-	}
-	else
-	{
-		un = n;
-		nbr_to_str(str, n_len - 1, un);
-	}
-	str[n_len] = '\0';
+	str[digit_num + minus_flag] = '\0';
 	return (str);
 }
