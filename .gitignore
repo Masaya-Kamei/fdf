@@ -1,5 +1,6 @@
 *.o
-*.a
-*.dylib
+libft.a
+libmlx.a
+libmlx.dylib
 *.txt
 fdf
