@@ -1,6 +1,7 @@
 *.o
 libft.a
 libmlx.a
+libmlx_Linux.a
 libmlx.dylib
 *.txt
 fdf
