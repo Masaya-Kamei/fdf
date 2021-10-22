@@ -6,32 +6,31 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:27 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/21 12:18:52 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/22 10:31:08 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	get_z_abs_max(const t_map map)
+static void	init_camera_data(t_data *d, int argc, char **argv)
 {
-	int		max;
-	int		x;
-	int		y;
-	int		z;
+	double	h;
 
-	max = 0;
-	y = -1;
-	while (++y < map.height)
+	if (argc == 4)
 	{
-		x = -1;
-		while (++x < map.width)
-		{
-			z = fabs(map.matrix_3d[y][x].z);
-			if (max < z)
-				max = ceil(z);
-		}
+		d->camera.pixel_per_len = ft_atoi(argv[2]);
+		d->camera.z_per_xy = ft_atoi(argv[3]) / d->camera.pixel_per_len;
 	}
-	return (max);
+	else
+	{
+		d->camera.z_per_xy = 1.125;
+		h = hypot(d->map.width / 2, d->map.height / 2)
+			+ d->map.max_abs_z * d->camera.z_per_xy;
+		d->camera.pixel_per_len
+			= (fmin(d->win.width, d->win.height) / 2) / (h + 2);
+	}
+	d->camera.pixel_per_press = d->camera.pixel_per_len / 10;
+	d->camera.angle_per_press = PI / 24.0;
 }
 
 static void	init_matrix_2d_data(t_map *map)
@@ -74,10 +73,8 @@ static void	init_sort_data(t_map *map)
 		exit_with_errout(NULL, NULL, NULL);
 }
 
-static void	init_fdf_data(t_data *d)
+static void	init_fdf_data(t_data *d, int argc, char **argv)
 {
-	double	h;
-
 	d->basis.ex.x = 1;
 	d->basis.ex.y = 0;
 	d->basis.ey.x = 0;
@@ -86,17 +83,12 @@ static void	init_fdf_data(t_data *d)
 	d->basis.ez.y = -1;
 	d->win.width = 800;
 	d->win.height = 800;
-	d->camera.z_per_xy = 1.125;
-	h = hypot(d->map.width / 2, d->map.height / 2)
-		+ get_z_abs_max(d->map) * d->camera.z_per_xy;
-	d->camera.pixel_per_len = (fmin(d->win.width, d->win.height) / 2) / (h + 2);
-	d->camera.pixel_per_press = d->camera.pixel_per_len / 10;
-	d->camera.angle_per_press = PI / 24.0;
 	d->mlx = mlx_init();
 	d->win.win = mlx_new_window(d->mlx, d->win.width, d->win.height, "FDF");
 	d->img.img = mlx_new_image(d->mlx, d->win.width, d->win.height);
 	d->img.addr = mlx_get_data_addr(d->img.img,
 			&d->img.bits_per_pixel, &d->img.line_length, &d->img.endian);
+	init_camera_data(d, argc, argv);
 	init_matrix_2d_data(&d->map);
 	init_sort_data(&d->map);
 	rotate_3d_map(d->map, Z, -PI / 4);
@@ -113,7 +105,7 @@ int	main(int argc, char **argv)
 	if (d == NULL)
 		exit_with_errout(NULL, NULL, NULL);
 	read_3d_map_data(&d->map, argv[1]);
-	init_fdf_data(d);
+	init_fdf_data(d, argc, argv);
 	draw_map(d);
 	mlx_hook(d->win.win, KEYPRESS, 1L << 0, key_handler, d);
 	mlx_hook(d->win.win, BUTTONPRESS, 1L << 2, mouse_press_handler, d);

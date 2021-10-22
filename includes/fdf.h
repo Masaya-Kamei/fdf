@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/21 12:02:52 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/22 10:28:26 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_map
 	t_point_2d	**matrix_2d;
 	int			width;
 	int			height;
+	int			max_abs_z;
 	t_point_3d	**sorted_p_3d_ptrs;
 	t_point_3d	**msort_tmp;
 }				t_map;
@@ -74,9 +75,9 @@ typedef struct s_map
 typedef struct s_camera
 {
 	double		pixel_per_len;
+	double		z_per_xy;
 	double		pixel_per_press;
 	double		angle_per_press;
-	double		z_per_xy;
 }				t_camera;
 
 typedef struct s_vector

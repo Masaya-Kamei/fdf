@@ -6,7 +6,7 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/21 11:11:02 by mkamei            #+#    #+#              #
-#    Updated: 2021/10/21 11:29:07 by mkamei           ###   ########.fr        #
+#    Updated: 2021/10/22 10:34:25 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,22 +32,26 @@ LIBFTTARGET	:= all
 
 ifeq ($(shell uname),Linux)
 	LIBMLXDIR	:= ./minilibx_linux
-	LIBMLX		:= $(LIBMLXDIR)/libmlx.dylib
+	LIBMLX		:= $(LIBMLXDIR)/libmlx_Linux.a
 else
 	LIBMLXDIR	:= ./minilibx_macos
 	LIBMLX		:= $(LIBMLXDIR)/libmlx.a
 endif
 
-LIBDIR		:= -L${LIBFTDIR} -L${LIBMLXDIR}
-LIBLINK		:= -lft -lmlx
 LIBINCLUDE	:= -I./libft -I${LIBMLXDIR}
+LIBDIR		:= -L${LIBFTDIR} -L${LIBMLXDIR}
+LIBLINK		:= -lft
+ifeq ($(shell uname),Linux)
+	LIBLINK += -lmlx_Linux -lm -lXext -lX11
+else
+	LIBLINK	+= -lmlx -framework OpenGL -framework AppKit
+endif
 LIB			:= $(LIBINCLUDE) $(LIBDIR) $(LIBLINK)
-FRAMEWORK	:= -framework OpenGL -framework AppKit
 
 all		:	$(NAME)
 
 $(NAME)	:	$(LIBFT) $(LIBMLX) $(OBJS)
-			$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(LIB) $(FRAMEWORK) -o $(NAME)
+			$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) $(LIB) -o $(NAME)
 
 $(OBJSDIR)/%.o	:	$(SRCSDIR)/%.c
 			@mkdir -p $(dir $@)
