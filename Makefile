@@ -6,7 +6,7 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/21 11:11:02 by mkamei            #+#    #+#              #
-#    Updated: 2021/10/22 11:58:57 by mkamei           ###   ########.fr        #
+#    Updated: 2021/10/22 15:24:24 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,23 +30,23 @@ LIBFTDIR	:=	./libft
 LIBFT		:=	$(LIBFTDIR)/libft.a
 LIBFTTARGET	:=	all
 
-LIBMLXDIR	:=	./minilibx-linux
 ifeq ($(shell uname),Linux)
-	LIBMLX	:= $(LIBMLXDIR)/libmlx_Linux.a
+	LIBMLXDIR	:=	./minilibx-linux
+	LIBMLX		:= $(LIBMLXDIR)/libmlx_Linux.a
 else
-	LIBMLX	:=	$(LIBMLXDIR)/libmlx_Darwin.a
+	LIBMLXDIR	:=	./minilibx_macos
+	LIBMLX		:=	$(LIBMLXDIR)/libmlx.a
 endif
 
-LIBINCLUDE	:= -I./libft -I./minilibx-linux
-LIBDIR		:= -L${LIBFTDIR} -L${LIBMLXDIR}
-LIBLINK		:= -lft -lXext -lX11
+LIBINCLUDE	:=	-I${LIBFTDIR} -I${LIBMLXDIR}
+LIBDIR		:=	-L${LIBFTDIR} -L${LIBMLXDIR}
+LIBLINK		:=	-lft
 ifeq ($(shell uname),Linux)
-	LIBLINK 	+= -lmlx_Linux -lm
+	LIBLINK 	+=	-lmlx_Linux -lm -lXext -lX11
 else
-	LIBLINK		+=	-lmlx_Darwin
-	LIBINCLUDE	+=	-I/usr/local/include
+	LIBLINK		+=	-lmlx -framework OpenGL -framework AppKit
 endif
-LIB			:= $(LIBINCLUDE) $(LIBDIR) $(LIBLINK)
+LIB			:=	$(LIBINCLUDE) $(LIBDIR) $(LIBLINK)
 
 all		:	$(NAME)
 
