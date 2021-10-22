@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:38:31 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/22 10:07:09 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/22 09:59:05 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static void	save_3d_map_data(t_map *map, t_list *lines_list)
 		free_double_ptr((void **)p_3d_strs);
 		list = list->next;
 	}
-	ft_lstclear(&lines_list, NULL);
+	ft_lstclear(&lines_list, free);
 }
 
 void	read_3d_map_data(t_map *map, const char *fdf_file)
