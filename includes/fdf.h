@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/22 10:28:26 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/22 09:50:11 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,19 @@
 # define PI 3.14159
 
 // key
-# define ESC_KEY 53
-# define LEFT_KEY 123
-# define RIGHT_KEY 124
-# define DOWN_KEY 125
-# define UP_KEY 126
+# if __linux__
+#  define ESC_KEY 65307
+#  define LEFT_KEY 65361
+#  define UP_KEY 65362
+#  define RIGHT_KEY 65363
+#  define DOWN_KEY 65364
+# else
+#  define ESC_KEY 53
+#  define LEFT_KEY 123
+#  define RIGHT_KEY 124
+#  define DOWN_KEY 125
+#  define UP_KEY 126
+# endif
 # define MOUSE_DOWN 4
 # define MOUSE_UP 5
 
