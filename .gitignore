@@ -5,3 +5,4 @@ libmlx_Linux.a
 libmlx.dylib
 *.txt
 fdf
+Makefile.gen
