@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/24 19:16:16 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/28 16:05:38 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	**create_matrix(const int width, const int height, const int size)
 	return (matrix);
 }
 
-void	write_matrix_3d(const t_map map)
+void	write_matrix_3d_z(const t_map map)
 {
 	int		x;
 	int		y;

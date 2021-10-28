@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 12:44:03 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/21 11:56:35 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/28 16:07:22 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,27 @@
 
 static void	rotate_x(double *y, double *z, const double theta)
 {
-	double	oldy;
-	double	oldz;
+	const double	oldy = *y;
+	const double	oldz = *z;
 
-	oldy = *y;
-	oldz = *z;
 	*y = oldy * cos(theta) - oldz * sin(theta);
 	*z = oldy * sin(theta) + oldz * cos(theta);
 }
 
 static void	rotate_y(double *x, double *z, const double phi)
 {
-	double	oldx;
-	double	oldz;
+	const double	oldx = *x;
+	const double	oldz = *z;
 
-	oldx = *x;
-	oldz = *z;
 	*x = oldx * cos(phi) + oldz * sin(phi);
 	*z = -oldx * sin(phi) + oldz * cos(phi);
 }
 
 static void	rotate_z(double *x, double *y, const double psi)
 {
-	double	oldx;
-	double	oldy;
+	const double	oldx = *x;
+	const double	oldy = *y;
 
-	oldx = *x;
-	oldy = *y;
 	*x = oldx * cos(psi) - oldy * sin(psi);
 	*y = oldx * sin(psi) + oldy * cos(psi);
 }
