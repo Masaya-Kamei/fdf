@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/21 11:53:11 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/24 19:16:16 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,15 @@ int	finish_fdf(t_data *d)
 void	exit_with_errout(
 	const char *err_msg1, const char *err_msg2, const char *err_msg3)
 {
-	if (err_msg1 != NULL)
+	if (err_msg1)
 	{
 		write(1, err_msg1, ft_strlen(err_msg1));
-		if (err_msg2 != NULL)
+		if (err_msg2)
 		{
 			write(1, " ", 1);
 			write(1, err_msg2, ft_strlen(err_msg2));
 		}
-		if (err_msg3 != NULL)
+		if (err_msg3)
 		{
 			write(1, " ", 1);
 			write(1, err_msg3, ft_strlen(err_msg3));
@@ -60,6 +60,28 @@ void	exit_with_errout(
 	else
 		perror(NULL);
 	exit(1);
+}
+
+void	**create_matrix(const int width, const int height, const int size)
+{
+	void	**matrix;
+	int		y;
+
+	matrix = malloc(__SIZEOF_POINTER__ * (height + 1));
+	if (matrix == NULL)
+		return (NULL);
+	y = -1;
+	while (++y < height)
+	{
+		matrix[y] = malloc(size * width);
+		if (matrix[y] == NULL)
+		{
+			free_double_ptr(matrix);
+			return (NULL);
+		}
+	}
+	matrix[y] = NULL;
+	return (matrix);
 }
 
 void	write_matrix_3d(const t_map map)

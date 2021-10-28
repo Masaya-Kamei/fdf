@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/22 09:50:11 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/24 19:15:20 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_map
 	int			width;
 	int			height;
 	int			max_abs_z;
+	double		z_per_xy;
 	t_point_3d	**sorted_p_3d_ptrs;
 	t_point_3d	**msort_tmp;
 }				t_map;
@@ -83,7 +84,6 @@ typedef struct s_map
 typedef struct s_camera
 {
 	double		pixel_per_len;
-	double		z_per_xy;
 	double		pixel_per_press;
 	double		angle_per_press;
 }				t_camera;
@@ -127,23 +127,25 @@ typedef struct s_data
 }				t_data;
 
 // main
-void	read_3d_map_data(t_map *map, const char *fdf_file);
+void	read_3d_map_data(t_map *map, const char *file_path);
+void	init_fdf_data(t_data *d);
 void	draw_map(t_data *d);
-void	merge_sort_by_3d_y(t_point_3d **p_3d_ptrs,
-			t_point_3d **tmp, const int start, const int end);
-void	rotate_3d_map(t_map map, const t_axis_name name, const double angle);
 
 // handler
 int		key_handler(const int keycode, t_data *d);
 int		mouse_press_handler(
 			const int keycode, const int x, const int y, t_data *d);
+void	rotate_3d_map(t_map map, const t_axis_name name, const double angle);
 
 // utils
+void	merge_sort_by_3d_y(t_point_3d **p_3d_ptrs,
+			t_point_3d **tmp, const int start, const int end);
 int		get_next_line(int fd, char **line);
 void	free_double_ptr(void **ptr);
 int		finish_fdf(t_data *d);
 void	exit_with_errout(
 			const char *err_msg1, const char *err_msg2, const char *err_msg3);
+void	**create_matrix(const int width, const int height, const int size);
 void	write_matrix_3d(const t_map map);
 
 #endif

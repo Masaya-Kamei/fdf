@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:14:37 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/21 11:10:14 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/28 11:49:23 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,14 @@ static void	update_matrix_2d(t_data *d)
 	y = -1;
 	while (++y < d->map.height)
 	{
+		d->map.matrix_2d[y] = (t_point_2d *)d->map.matrix_2d[y];
 		x = -1;
 		while (++x < d->map.width)
 		{
 			p_3d = d->map.matrix_3d[y][x];
 			p_3d.x *= d->camera.pixel_per_len;
 			p_3d.y *= d->camera.pixel_per_len;
-			p_3d.z *= d->camera.pixel_per_len * d->camera.z_per_xy;
+			p_3d.z *= d->camera.pixel_per_len;
 			p_2d = change_basis(d->basis, p_3d);
 			p_2d.x += d->win.width / 2;
 			p_2d.y += d->win.height / 2;
