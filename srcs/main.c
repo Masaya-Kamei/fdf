@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:27 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/30 12:02:49 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/30 12:16:57 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int argc, char **argv)
 	mlx_hook(d->win.win, KEYPRESS, 1L << 0, key_handler, d);
 	mlx_hook(d->win.win, BUTTONPRESS, 1L << 2, zoom_handler, d);
 	mlx_hook(d->win.win, DESTROYNOTIFY, 1L << 17, finish_fdf_handler, d);
-	mlx_hook(d->win.win, FOCUSIN, 1L << 21, put_img_handler, &d);
+	mlx_hook(d->win.win, FOCUSIN, 1L << 21, put_img_handler, d);
 	mlx_loop(d->mlx);
 	return (0);
 }
