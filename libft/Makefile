@@ -41,11 +41,10 @@ fclean	:	clean
 
 re		:	fclean all
 
-address	:	CC		=	clang
 address	:	CFLAGS += 	-g -fsanitize=address
 address	:	re
 
-leak	:	CC		=	clang
+leak	:	CC		=	/usr/local/opt/llvm/bin/clang
 leak	:	CFLAGS += 	-g -fsanitize=leak
 leak	:	re
 
