@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/28 16:05:38 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/30 11:34:42 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+#if __linux__
+
+static void	free_mlx_ptr(t_data *d)
+{
+	mlx_destroy_display(d->mlx);
+	free(d->mlx);
+}
+
+#elif __MACH__
+
+static void	free_mlx_ptr(t_data *d)
+{
+	d = (t_data *)d;
+}
+
+#endif
 
 void	free_double_ptr(void **ptr)
 {
@@ -35,6 +52,7 @@ int	finish_fdf(t_data *d)
 	free(d->map.msort_tmp);
 	mlx_destroy_image(d->mlx, d->img.img);
 	mlx_destroy_window(d->mlx, d->win.win);
+	free_mlx_ptr(d);
 	free(d);
 	exit(0);
 }
@@ -60,45 +78,4 @@ void	exit_with_errout(
 	else
 		perror(NULL);
 	exit(1);
-}
-
-void	**create_matrix(const int width, const int height, const int size)
-{
-	void	**matrix;
-	int		y;
-
-	matrix = malloc(__SIZEOF_POINTER__ * (height + 1));
-	if (matrix == NULL)
-		return (NULL);
-	y = -1;
-	while (++y < height)
-	{
-		matrix[y] = malloc(size * width);
-		if (matrix[y] == NULL)
-		{
-			free_double_ptr(matrix);
-			return (NULL);
-		}
-	}
-	matrix[y] = NULL;
-	return (matrix);
-}
-
-void	write_matrix_3d_z(const t_map map)
-{
-	int		x;
-	int		y;
-
-	y = -1;
-	while (y < map.height)
-	{
-		x = -1;
-		while (x < map.width)
-		{
-			if (x != 0)
-				write(1, "   ", 3);
-			ft_putnbr_fd(map.matrix_3d[y][x].z, 1);
-		}
-		write(1, "\n", 1);
-	}
 }
