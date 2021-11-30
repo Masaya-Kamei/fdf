@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rotate.c                                           :+:      :+:    :+:   */
+/*   map_ope.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 12:44:03 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/28 16:07:22 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/30 18:02:53 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,42 @@ static void	rotate_z(double *x, double *y, const double psi)
 	*y = oldx * sin(psi) + oldy * cos(psi);
 }
 
-void	rotate_3d_map(t_map map, const t_axis_name name, const double angle)
+void	rotate_3d_map(t_map *map, const t_axis_name name, const double angle)
+{
+	int					x;
+	int					y;
+	t_point_3d **const	matrix_3d = map->matrix_3d;
+
+	y = -1;
+	while (++y < map->height)
+	{
+		x = -1;
+		while (++x < map->width)
+		{
+			if (name == X)
+				rotate_x(&matrix_3d[y][x].y, &matrix_3d[y][x].z, angle);
+			else if (name == Y)
+				rotate_y(&matrix_3d[y][x].x, &matrix_3d[y][x].z, angle);
+			else if (name == Z)
+				rotate_z(&matrix_3d[y][x].x, &matrix_3d[y][x].y, angle);
+		}
+	}
+}
+
+void	zoom_3d_map(t_map *map, const double xy_zoom, const double z_zoom)
 {
 	int		x;
 	int		y;
 
 	y = -1;
-	while (++y < map.height)
+	while (++y < map->height)
 	{
 		x = -1;
-		while (++x < map.width)
+		while (++x < map->width)
 		{
-			if (name == X)
-				rotate_x(&map.matrix_3d[y][x].y, &map.matrix_3d[y][x].z, angle);
-			else if (name == Y)
-				rotate_y(&map.matrix_3d[y][x].x, &map.matrix_3d[y][x].z, angle);
-			else if (name == Z)
-				rotate_z(&map.matrix_3d[y][x].x, &map.matrix_3d[y][x].y, angle);
+			map->matrix_3d[y][x].x *= xy_zoom;
+			map->matrix_3d[y][x].y *= xy_zoom;
+			map->matrix_3d[y][x].z *= z_zoom;
 		}
 	}
 }

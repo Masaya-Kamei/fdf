@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:38:31 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/28 15:53:06 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/30 14:27:33 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	parse_p_3d_str(t_map *map, char *p_3d_str, const int x, const int y)
 	map->matrix_3d[y][x].matrix_y = y;
 	map->matrix_3d[y][x].x = x - map->width / 2.0;
 	map->matrix_3d[y][x].y = y - map->height / 2.0;
-	map->matrix_3d[y][x].z = atoi_in_base(p_3d_str, 10) * map->z_per_xy;
+	map->matrix_3d[y][x].z = atoi_in_base(p_3d_str, 10);
 	if (map->max_abs_z < fabs(map->matrix_3d[y][x].z))
 		map->max_abs_z = fabs(map->matrix_3d[y][x].z);
 	comma_ptr = ft_strchr(p_3d_str, ',');

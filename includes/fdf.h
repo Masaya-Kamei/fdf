@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/30 12:07:03 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/30 18:08:27 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,9 @@ typedef struct s_map
 	int			width;
 	int			height;
 	int			max_abs_z;
-	double		z_per_xy;
 	t_point_3d	**sorted_p_3d_ptrs;
 	t_point_3d	**msort_tmp;
 }				t_map;
-
-typedef struct s_camera
-{
-	double		pixel_per_len;
-	double		pixel_per_press;
-	double		angle_per_press;
-}				t_camera;
 
 typedef struct s_vector
 {
@@ -101,6 +93,13 @@ typedef struct s_basis
 	t_vector	ey;
 	t_vector	ez;
 }				t_basis;
+
+typedef struct s_camera
+{
+	double		zoom_per_press;
+	double		angle_per_press;
+	t_basis		basis;
+}				t_camera;
 
 typedef struct s_win
 {
@@ -121,7 +120,6 @@ typedef struct s_data
 {
 	t_map		map;
 	t_camera	camera;
-	t_basis		basis;
 	void		*mlx;
 	t_win		win;
 	t_img		img;
@@ -129,7 +127,6 @@ typedef struct s_data
 
 // main
 void	read_3d_map_data(t_map *map, const char *file_path);
-void	init_fdf_data(t_data *d);
 void	draw_map(t_data *d);
 
 // handler
@@ -137,7 +134,8 @@ int		key_handler(const int keycode, t_data *d);
 int		zoom_handler(const int keycode, const int x, const int y, t_data *d);
 int		finish_fdf_handler(t_data *d);
 int		put_img_handler(t_data *d);
-void	rotate_3d_map(t_map map, const t_axis_name name, const double angle);
+void	rotate_3d_map(t_map *map, const t_axis_name name, const double angle);
+void	zoom_3d_map(t_map *map, const double xy_zoom, const double z_zoom);
 
 // utils
 void	merge_sort_by_3d_y(t_point_3d **p_3d_ptrs,

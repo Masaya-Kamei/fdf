@@ -6,13 +6,13 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/21 11:11:02 by mkamei            #+#    #+#              #
-#    Updated: 2021/11/30 11:35:25 by mkamei           ###   ########.fr        #
+#    Updated: 2021/11/30 17:16:57 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCSDIR	:= ./srcs
-SRCSNAME:=	main.c read_map.c init.c draw_map.c \
-			handler/handler.c handler/rotate.c \
+SRCSNAME:=	main.c read_map.c draw_map.c \
+			handler/handler.c handler/map_ope.c \
 			utils/merge_sort.c utils/get_next_line.c utils/exit.c utils/matrix.c
 SRCS	:= $(addprefix $(SRCSDIR)/, $(SRCSNAME))
 

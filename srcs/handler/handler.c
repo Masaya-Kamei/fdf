@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 19:43:10 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/30 12:09:31 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/30 17:59:08 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ int	key_handler(const int keycode, t_data *d)
 		|| keycode == UP_KEY || keycode == DOWN_KEY)
 	{
 		if (keycode == LEFT_KEY)
-			rotate_3d_map(d->map, Z, d->camera.angle_per_press);
+			rotate_3d_map(&d->map, Z, d->camera.angle_per_press);
 		else if (keycode == RIGHT_KEY)
-			rotate_3d_map(d->map, Z, -d->camera.angle_per_press);
+			rotate_3d_map(&d->map, Z, -d->camera.angle_per_press);
 		else if (keycode == DOWN_KEY)
-			rotate_3d_map(d->map, X, -d->camera.angle_per_press);
+			rotate_3d_map(&d->map, X, -d->camera.angle_per_press);
 		else
-			rotate_3d_map(d->map, X, d->camera.angle_per_press);
+			rotate_3d_map(&d->map, X, d->camera.angle_per_press);
 		draw_map(d);
 	}
 	return (1);
@@ -34,18 +34,17 @@ int	key_handler(const int keycode, t_data *d)
 
 int	zoom_handler(const int keycode, const int x, const int y, t_data *d)
 {
+	double	zoom_per_press;
+
 	(void)x;
 	(void)y;
 	if (keycode == MOUSE_DOWN || keycode == MOUSE_UP)
 	{
 		if (keycode == MOUSE_UP)
-		{
-			d->camera.pixel_per_len -= d->camera.pixel_per_press;
-			if (d->camera.pixel_per_len < 0)
-				d->camera.pixel_per_len = 0;
-		}
-		else if (keycode == MOUSE_DOWN)
-			d->camera.pixel_per_len += d->camera.pixel_per_press;
+			zoom_per_press = 1 / d->camera.zoom_per_press;
+		else
+			zoom_per_press = d->camera.zoom_per_press;
+		zoom_3d_map(&d->map, zoom_per_press, zoom_per_press);
 		draw_map(d);
 	}
 	return (1);
