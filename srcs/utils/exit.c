@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 12:40:09 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/30 12:06:23 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/30 13:23:31 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	free_mlx_ptr(t_data *d)
 	free(d->mlx);
 }
 
-#elif __MACH__
+#else
 
 static void	free_mlx_ptr(t_data *d)
 {
