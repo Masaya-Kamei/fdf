@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/28 16:05:46 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/30 12:07:03 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define KEYPRESS 2
 # define BUTTONPRESS 4
 # define DESTROYNOTIFY 17
+# define FOCUSIN 9
 
 typedef enum e_axis_name
 {
@@ -133,8 +134,9 @@ void	draw_map(t_data *d);
 
 // handler
 int		key_handler(const int keycode, t_data *d);
-int		mouse_press_handler(
-			const int keycode, const int x, const int y, t_data *d);
+int		zoom_handler(const int keycode, const int x, const int y, t_data *d);
+int		finish_fdf_handler(t_data *d);
+int		put_img_handler(t_data *d);
 void	rotate_3d_map(t_map map, const t_axis_name name, const double angle);
 
 // utils
@@ -142,7 +144,7 @@ void	merge_sort_by_3d_y(t_point_3d **p_3d_ptrs,
 			t_point_3d **tmp, const int start, const int end);
 int		get_next_line(int fd, char **line);
 void	free_double_ptr(void **ptr);
-int		finish_fdf(t_data *d);
+void	finish_fdf(t_data *d);
 void	exit_with_errout(
 			const char *err_msg1, const char *err_msg2, const char *err_msg3);
 void	**create_matrix(const int width, const int height, const int size);
