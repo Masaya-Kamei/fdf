@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:27 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/30 18:06:30 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/12/07 16:49:27 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	init_map_data(t_map *map)
 }
 
 static void	get_pixel_per_len(
-	t_data *d, char **argv, int *xy_pixel_per_len, int *z_pixel_per_len)
+	t_data *d, char **argv, double *xy_pixel_per_len, double *z_pixel_per_len)
 {
 	int		n2;
 	int		n3;
@@ -64,8 +64,8 @@ static void	get_pixel_per_len(
 
 static void	init_fdf_data(t_data *d, char **argv)
 {
-	int		xy_pixel_per_len;
-	int		z_pixel_per_len;
+	double	xy_pixel_per_len;
+	double	z_pixel_per_len;
 
 	init_map_data(&d->map);
 	d->win.width = 800;
