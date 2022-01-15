@@ -7,3 +7,4 @@ libmlx.dylib
 fdf
 Makefile.gen
 minilibx-linux/test/mlx-test
+objs
