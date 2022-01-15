@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 19:43:10 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/30 17:59:08 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/01/15 14:35:09 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	key_handler(const int keycode, t_data *d)
 			rotate_3d_map(&d->map, X, d->camera.angle_per_press);
 		draw_map(d);
 	}
-	return (1);
+	return (0);
 }
 
 int	zoom_handler(const int keycode, const int x, const int y, t_data *d)
@@ -47,17 +47,17 @@ int	zoom_handler(const int keycode, const int x, const int y, t_data *d)
 		zoom_3d_map(&d->map, zoom_per_press, zoom_per_press);
 		draw_map(d);
 	}
-	return (1);
+	return (0);
 }
 
 int	finish_fdf_handler(t_data *d)
 {
 	finish_fdf(d);
-	return (1);
+	return (0);
 }
 
 int	put_img_handler(t_data *d)
 {
 	mlx_put_image_to_window(d->mlx, d->win.win, d->img.img, 0, 0);
-	return (1);
+	return (0);
 }

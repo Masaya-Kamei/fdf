@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:14:37 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/30 17:31:49 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/01/15 14:28:00 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	draw_line(t_data *d, t_point_2d p, const t_point_2d q)
 	y_step /= count;
 	color_step[0] = ((color_step[0] / count) << 16)
 		+ ((color_step[1] / count) << 8) + (color_step[2] / count);
-	while (--count >= 0)
+	while (count-- >= 0)
 	{
 		if (p.x >= 0 && p.x < d->win.width && p.y >= 0 && p.y < d->win.height)
 			my_mlx_pixel_put(d->img, p.x, p.y, p.color);
