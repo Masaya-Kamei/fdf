@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 15:03:55 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/30 18:08:27 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/01/16 10:20:22 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ typedef struct s_win
 	int			height;
 }				t_win;
 
-typedef struct s_img {
+typedef struct s_img
+{
 	void		*img;
 	char		*addr;
 	int			bits_per_pixel;
