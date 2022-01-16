@@ -6,7 +6,7 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/21 11:11:02 by mkamei            #+#    #+#              #
-#    Updated: 2022/01/15 15:42:16 by mkamei           ###   ########.fr        #
+#    Updated: 2022/01/16 09:56:00 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ BONUS_OBJSNAME	:=	$(BONUS_SRCSNAME:.c=.o)
 BONUS_OBJS		:=	$(addprefix $(BONUS_OBJSDIR)/, $(BONUS_OBJSNAME))
 
 BONUS_INCLUDE	:=	$(subst includes,bonus/includes,$(INCLUDE))
-BONUS_NAME		:=	$(addprefix ./bonus/, $(NAME))
+BONUS_NAME		:=	$(addsuffix _bonus, $(NAME))
 
 CC		:=	gcc
 CFLAGS	:=	-Wall -Wextra -Werror

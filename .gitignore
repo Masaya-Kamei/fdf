@@ -2,9 +2,11 @@
 libft.a
 libmlx.a
 libmlx_Linux.a
+libmlx_Darwin.a
 libmlx.dylib
 *.txt
 fdf
+fdf_bonus
 Makefile.gen
 minilibx-linux/test/mlx-test
 objs
