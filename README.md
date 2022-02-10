@@ -7,7 +7,7 @@ Draw a simplified 3D graphic representation of a relief landscape.
 ## Usage example
 
 ```zsh
-git clone https://github.com/Masaya-Kamei/fdf.git;
+git clone https://github.com/Masaya-Kamei/fdf.git --recursive;
 cd fdf;
 make;
 ./fdf maps/42.fdf;
