@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 12:14:37 by mkamei            #+#    #+#             */
-/*   Updated: 2022/01/15 14:28:00 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/02/10 14:55:46 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	draw_line(t_data *d, t_point_2d p, const t_point_2d q)
 
 	x_step = q.x - p.x;
 	y_step = q.y - p.y;
-	color_step[0] = (q.color >> 16 & 0x0000ff ) - (p.color >> 16 & 0x0000ff);
+	color_step[0] = (q.color >> 16 & 0x0000ff) - (p.color >> 16 & 0x0000ff);
 	color_step[1] = (q.color >> 8 & 0x0000ff) - (p.color >> 8 & 0x0000ff);
 	color_step[2] = (q.color & 0x0000ff) - (p.color & 0x0000ff);
 	count = ceil(fmax(fabs(x_step), fabs(y_step)));
