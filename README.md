@@ -17,6 +17,9 @@ make;
 ./fdf maps/42.fdf;
 ```
 
+- Rotate: Arrow key  
+- Zoom: Mouse wheel
+
 ## Tool
 
 - [my libft](https://github.com/Masaya-Kamei/libft) (42 useful functions)
