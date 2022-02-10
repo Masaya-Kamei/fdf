@@ -4,6 +4,10 @@ Draw a simplified 3D graphic representation of a relief landscape.
 
 `./fdf [map_file]`
 
+## Demo
+
+![fdf](https://user-images.githubusercontent.com/50983708/153358359-3cae0d77-476d-481e-b254-cf85210f0178.gif)
+
 ## Usage example
 
 ```zsh
