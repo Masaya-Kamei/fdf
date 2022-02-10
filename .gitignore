@@ -8,5 +8,5 @@ libmlx.dylib
 fdf
 fdf_bonus
 Makefile.gen
-minilibx-linux/test/mlx-test
+lib/minilibx-linux/test/mlx-test
 objs
