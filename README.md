@@ -2,6 +2,8 @@
 
 Draw a simplified 3D graphic representation of a relief landscape with parallel projection.
 
+## Usage
+
 `./fdf [map_file]`
 
 Map example:
@@ -24,7 +26,7 @@ Map example:
 
 ![fdf](https://user-images.githubusercontent.com/50983708/153358359-3cae0d77-476d-481e-b254-cf85210f0178.gif)
 
-## Usage example
+## Script
 
 ```zsh
 git clone https://github.com/Masaya-Kamei/fdf.git --recursive;
