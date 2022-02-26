@@ -1,6 +1,6 @@
 # 42 fdf
 
-Draw a simplified 3D graphic representation of a relief landscape.
+Draw a simplified 3D graphic representation of a relief landscape with parallel projection.
 
 `./fdf [map_file]`
 
