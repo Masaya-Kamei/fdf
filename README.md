@@ -24,7 +24,7 @@ make
 - 回転: 矢印キー
 - ズーム: マウスホイール
 
-Map example:
+map_file example: `maps/42.fdf`
 
 ```txt
 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
