@@ -1,10 +1,28 @@
 # 42 fdf
 
-Draw a simplified 3D graphic representation of a relief landscape with parallel projection.
+## 概要
+
+平行投影の一種である等角投影を使った3Dプロジェクション
+
+- マップファイルを読み込む
+- マップの回転やズームが可能
+- 仕組み: 3次元の点をxy平面に正射影して基底変換する
+
+## Demo
+
+![fdf](https://user-images.githubusercontent.com/50983708/153358359-3cae0d77-476d-481e-b254-cf85210f0178.gif)
 
 ## Usage
 
-`./fdf [map_file]`
+```zsh
+git clone https://github.com/Masaya-Kamei/fdf.git --recursive
+cd fdf
+make
+./fdf [map_file]
+```
+
+- 回転: 矢印キー
+- ズーム: マウスホイール
 
 Map example:
 
@@ -22,21 +40,9 @@ Map example:
 0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
 ```
 
-## Demo
+## キーワード
 
-![fdf](https://user-images.githubusercontent.com/50983708/153358359-3cae0d77-476d-481e-b254-cf85210f0178.gif)
-
-## Script
-
-```zsh
-git clone https://github.com/Masaya-Kamei/fdf.git --recursive;
-cd fdf;
-make;
-./fdf maps/42.fdf;
-```
-
-- Rotate: Arrow key  
-- Zoom: Mouse wheel
+`C`,`3Dプロジェクション`,`平行投影`,`等角投影`,`ベクトル`,`正射影`,`基底変換`,`軸周りの回転` 
 
 ## Tool
 
